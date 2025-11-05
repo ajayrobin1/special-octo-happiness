@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io(process.env.BACKEND_URL);
+const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL);
 
 export default function AdminPage() {
   const [allMessages, setAllMessages] = useState([]);

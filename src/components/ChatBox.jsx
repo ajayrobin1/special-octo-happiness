@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io(process.env.BACKEND_URL); // backend URL
+console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
+const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL); // backend URL
 
 export default function ChatBox({openModal, handleModal}) {
   const [messages, setMessages] = useState([]);
