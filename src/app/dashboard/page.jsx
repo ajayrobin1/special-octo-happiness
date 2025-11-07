@@ -1,7 +1,13 @@
 import Dashboard from "@/components/Dashboard";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
-export default function Page() {
 
+export default async function Page() {
+  const session = await getServerSession(authOptions);
+  if (!session) redirect("/login");
+  
   const data = [
   {
     "clientId": "CL001",

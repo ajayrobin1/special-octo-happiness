@@ -1,5 +1,4 @@
 "use client"
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -13,8 +12,9 @@ const pathname = usePathname();
   className="flex h-screen w-full max-w-[18rem] flex-col bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5">
   <div className="p-4 mb-2">
     <h5 className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-      Sidebar
+      MARIA CONCEPTS
     </h5>
+    <p>CRM Portal</p>
   </div>
   <nav className="flex min-w-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
     <Link href={'/dashboard'} role="button"

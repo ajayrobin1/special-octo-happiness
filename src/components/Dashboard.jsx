@@ -3,7 +3,6 @@ import Link from "next/link";
 import ProjectDetails from "./ProjectDetails";
 import { useEffect, useState } from "react";
 
-
 export default function Dashboard({data}) {
 
   const [selected, setSelected] = useState();
@@ -13,7 +12,6 @@ export default function Dashboard({data}) {
 
   useEffect(()=>{
     const filteredData = (filterBy === '')? data : data.filter((item) => item.status === filterBy);
-    console.log(filteredData)
     setFilteredData(filteredData);
   }, [filterBy])
 
@@ -221,7 +219,7 @@ export default function Dashboard({data}) {
           <td className="p-4 border-b border-blue-gray-50">
             <div className="w-max">
               <div
-                className={`relative grid items-center px-2 py-1 font-sans text-xs font-bold ${item?.status === 'Success' ? 'text-green-900 bg-green-500/20' : item.status === 'Pending' ? 'text-neutral-900 bg-neutral-500/20' : 'text-amber-900 bg-amber-500/20' } uppercase rounded-md select-none whitespace-nowrap`}>
+                className={`relative grid items-center px-2 py-1 font-sans text-xs font-bold ${item?.status === 'Success' ? 'text-green-900 bg-green-500/20' : item?.status === 'Pending' ? 'text-neutral-900 bg-neutral-500/20' : 'text-amber-900 bg-amber-500/20' } uppercase rounded-md select-none whitespace-nowrap`}>
                 <span className="">{item?.status}</span>
               </div>
             </div>

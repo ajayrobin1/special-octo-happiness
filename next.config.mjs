@@ -1,7 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+      webpack5: true,
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+    config.resolve.fallback = { fs: false };
+
+    return config;
+  };
+  },
        images: {
-        domains: ['images.unsplash.com', 'mariaconstructions.in', 'media.istockphoto.com', 'images.pexels.com', 'res.cloudinary.com'],
+        domains: ['res.cloudinary.com'],
     },
 };
 

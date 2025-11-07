@@ -1,10 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL);
 
-export default function AdminPage() {
+export default async function Page() {
+  const session = await getServerSession(authOptions);
+  if (!session) redirect("/login");
+
   const [allMessages, setAllMessages] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [text, setText] = useState("");
