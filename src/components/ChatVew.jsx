@@ -28,7 +28,9 @@ const ChatView = () => {
   const sendMessage = (e) => {
       e.preventDefault();
       if (!text.trim()) return;
-      socket.emit("adminChat", { sessionId: selectedUser, text: text, isAdmin: true });
+      const msg = { sessionId: selectedUser, text: text, isAdmin: true };
+      socket.emit("adminChat", msg);
+      setAllMessages((prev) => [msg, ...prev])
       // socket.emit('adminChat', ({targetId, msgData}) )
       setText("");
     };
@@ -36,7 +38,7 @@ const ChatView = () => {
     
     return(
         <>
-              <div className="basis-2/4 border-r overflow-y-auto ">
+              <div className="basis-1/3 border-r overflow-y-auto ">
         <h2 className="p-4 text-xl font-semibold bg-neutral-800 text-neutral-200">
           Users
         </h2>
@@ -46,34 +48,42 @@ const ChatView = () => {
               allMessages
                 .filter((m) => m.sessionId === user)
                 .slice(0)[0]?.text || "";
+                          const isAdmin =
+              allMessages
+                .filter((m) => m.sessionId === user)
+                .slice(0)[0]?.isAdmin || false;
             return (
               <div
                 key={user}
                 onClick={() => setSelectedUser(user)}
-                className={`p-2 rounded cursor-pointer bg-neutral-100 ${
+                className={`p-2 cursor-pointer flex flex-row justify-between items-center ${
                   selectedUser === user
                     ? "ring"
-                    : "hover:bg-primary-100"
+                    : "hover:bg-neutral-200"
                 }`}
               >
+                <div>
                 <div className="font-semibold">{user}</div>
-                <div className="text-xs text-neutral-800 truncate">{lastMsg}</div>
+                <div className="text-xs text-neutral-800 truncate">{lastMsg}
+                </div>
+              </div>
+                  <div className={`w-3 h-3 rounded-full bg-blue-500 ${isAdmin? 'hidden' : 'block'}`}></div>
               </div>
             );
           })}
         </div>
       </div>
 
-              <div className="basis-2/4 flex flex-col border-r justify-between ">
+              <div className="basis-2/3 flex flex-col border-r justify-between ">
         <div className="p-4 bg-neutral-800 text-neutral-200">
           <h2 className="text-lg font-semibold">
             {selectedUser ? `Chat with ${selectedUser}` : "Select a user"}
           </h2>
         </div>
-        <div className="flex flex-col-reverse p-4 overflow-y-auto flex-1">
+        <div className="flex flex-col-reverse p-4 overflow-y-auto flex-1 px-12">
           {selectedUser &&
             userMessages.map((msg, i) => (
-              <div key={i} className={`${msg.isAdmin ? 'bg-primary-300 ml-auto': 'bg-neutral-300 mr-auto'} mb-2 p-2  rounded-lg max-w-xl`}>
+              <div key={i} className={`${msg.isAdmin ? 'bg-neutral-200 shadow-lg ml-auto': 'bg-neutral-100 shadow-lg mr-auto'} mb-2 p-2  rounded-lg max-w-xl`}>
                 <div className="text-xs text-neutral-600">
                   {new Date(msg.createdAt).toLocaleTimeString()}
                 </div>
@@ -94,7 +104,7 @@ const ChatView = () => {
             placeholder="Type a message..."
             className="flex-1 border rounded-lg p-2 bg-neutral-200 text-neutral-800"
           />
-          <button className="bg-green-800 text-white px-4 rounded-lg">
+          <button className="bg-neutral-800 text-white px-4 rounded">
             Send
           </button>
         </form>

@@ -47,6 +47,14 @@ const pathname = usePathname();
         </div>
       </div>
     </Link>
+
+        <Link href={'/imprt'} role="button"
+      className={`block flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start ${pathname === '/import' ?'bg-neutral-800 text-white' : 'bg-white'}`}>
+      <div className="grid mr-4 place-items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 36 36"><path fill="currentColor" d="M3 21a1 1 0 1 0 0 2h5v-2Z" className="clr-i-solid clr-i-solid-path-1"/><path fill="currentColor" d="M28 4H14.87L8 10.86V21h7.2l-3.25-3.25a1 1 0 0 1 1.41-1.41L19 22l-5.68 5.68a1 1 0 0 1-1.41-1.41L15.23 23H8v7a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm-12 8h-6v-.32L15.69 6H16Z" className="clr-i-solid clr-i-solid-path-2"/><path fill="none" d="M0 0h36v36H0z"/></svg>
+      </div>
+      Import
+    </Link>
     <div role="button"
       className="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
       <div className="grid mr-4 place-items-center">

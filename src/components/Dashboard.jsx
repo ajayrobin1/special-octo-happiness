@@ -2,12 +2,14 @@
 import Link from "next/link";
 import ProjectDetails from "./ProjectDetails";
 import { useEffect, useState } from "react";
+import FilterTab from "./FilterTab";
 
 export default function Dashboard({data}) {
 
   const [selected, setSelected] = useState();
   const [filterBy, setFilterBy] = useState('');
   const [searchInput, setSearchInput] = useState(null);
+  const [length, setLength] = useState(0);
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(()=>{
@@ -19,83 +21,42 @@ export default function Dashboard({data}) {
       if(searchInput){
         const filteredData = data.find((item) => item.clientId === searchInput);
         setFilteredData([filteredData]);
+        setLength(filteredData.length)
       } else {
-        setFilteredData(data);
-
+        setFilteredData(data); 
+        setLength(data.length);
       }
   }, [searchInput])
 
     
     return(
         <>
-<div className="flex flex-col w-full h-screen text-gray-700 bg-white border-l bg-clip-border">
+<div className="relative flex flex-col w-full h-screen text-gray-700 bg-white border-l bg-clip-border">
   <div className="relative px-4 py-2 text-gray-700 border-b rounded-none bg-clip-border">
     <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-      <div className="block w-full overflow-hidden md:w-max">
-        <nav>
-          <ul role="tablist" className="relative flex flex-row p-1 gap-x-6 rounded-lg">
-            <li onClick={() => setFilterBy('')} role="tab"
-              className={`${filterBy === ''? 'bg-neutral-200' : 'bg-white'} hover:bg-neutral-300 relative flex items-center justify-center w-full min-w-32 h-full border border-neutral-500 px-1 py-1 font-sans text-base antialiased font-normal leading-relaxed text-center rounded-md cursor-pointer select-none text-blue-gray-900`}
-              data-value="all">
-              <div className="z-20 text-inherit flex flex-row justify-between w-full px-1 items-center">
-                <div className = "p-0.5">All</div>
-                <div className="font-bold bg-neutral-800 rounded-lg text-white py-0.5 px-2.5">{data.length}</div>
-              </div>
-            </li>
-            <li onClick={() => setFilterBy('New')} role="tab"
-              className={`${filterBy === 'New'? 'bg-neutral-200' : 'bg-white'} hover:bg-neutral-300 relative flex items-center justify-center w-full min-w-32 h-full border border-neutral-500 px-1 py-1 font-sans text-base rounded-md antialiased font-normal leading-relaxed text-center cursor-pointer select-none`}
-              data-value="monitored">
-              <div className="z-20 text-inherit flex flex-row justify-between w-full px-1 items-center">
-                <div className = "p-0.5">New</div>
-                <div className="font-bold bg-neutral-800 rounded-lg text-white py-0.5 px-2.5">{data.filter(item => item.status === 'New').length}</div>
-              </div>
-            </li>
-            <li onClick={() => setFilterBy('Pending')} role="tab"
-              className={`${filterBy === 'Pending'? 'bg-neutral-200' : 'bg-white'} hover:bg-neutral-300 relative flex items-center justify-center w-full min-w-32 h-full border border-neutral-500 px-1 py-1 font-sans text-base rounded-md antialiased font-normal leading-relaxed text-center cursor-pointer select-none`}
-              data-value="unmonitored">
-              <div className="z-20 text-inherit flex flex-row justify-between w-full px-1 items-center">
-                <div className = "p-0.5">Pending</div>
-                <div className="font-bold bg-neutral-800 rounded-lg text-white py-0.5 px-2.5">{data.filter(item => item.status === 'Pending').length}</div>
-              </div>
-            </li>
-            <li onClick={() => setFilterBy('Success')} role="tab"
-              className={`${filterBy === 'Success'? 'bg-neutral-200' : 'bg-white'} hover:bg-neutral-300 relative flex items-center justify-center w-full min-w-32 h-full border border-neutral-500 px-1 py-1 font-sans text-base rounded-md antialiased font-normal leading-relaxed text-center cursor-pointer select-none`}
-              data-value="unmonitored">
-              <div className="z-20 text-inherit flex flex-row justify-between w-full px-1 items-center">
-                <div className = "p-0.5">&nbsp;&nbsp;Success&nbsp;&nbsp;</div>
-                <div className="font-bold bg-neutral-800 rounded-lg text-white py-0.5 px-2.5">{data.filter(item => item.status === 'Success').length}</div>
-              </div>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <FilterTab filterBy={filterBy} setFilterBy={setFilterBy} length={length} />
+
       <div className="w-full md:w-72">
         <div className="relative h-10 w-full min-w-[200px]">
-          <div className="absolute grid w-5 h-5 top-2/4 right-3 -translate-y-2/4 place-items-center text-blue-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-              stroke="currentColor" aria-hidden="true" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
-            </svg>
-          </div>
+
           <input
           onChange={(e) => setSearchInput(e.target.value)}
-            className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+            className="peer h-full w-full border border-blue-gray-200 bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
             placeholder=" " />
           <label
-            className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+            className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
             Search ID
           </label>
         </div>
       </div>
     </div>
   </div>
-  <div className="p-6 px-0 overflow-y-scroll">
-    <table className="w-full mt-4 text-left table-auto min-w-max">
+  <div className="px-0 overflow-y-scroll pb-12">
+    <table className="w-full text-left table-auto min-w-max">
       <thead>
         <tr>
           <th
-            className="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
+            className="p-4 transition-colors cursor-pointer border-b border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
             <p
               className="flex items-center justify-between gap-2 font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
               ID
@@ -107,7 +68,7 @@ export default function Dashboard({data}) {
             </p>
           </th>
           <th
-            className="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
+            className="p-4 transition-colors cursor-pointer border-b border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
             <p
               className="flex items-center justify-between gap-2 font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
               Name
@@ -119,7 +80,7 @@ export default function Dashboard({data}) {
             </p>
           </th>
           <th
-            className="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
+            className="p-4 transition-colors cursor-pointer border-b border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
             <p
               className="flex items-center justify-between gap-2 font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
               Date
@@ -131,7 +92,7 @@ export default function Dashboard({data}) {
             </p>
           </th>
           <th
-            className="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
+            className="p-4 transition-colors cursor-pointer border-b border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
             <p
               className="flex items-center justify-between gap-2 font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
               Project
@@ -143,7 +104,7 @@ export default function Dashboard({data}) {
             </p>
           </th>
           <th
-            className="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
+            className="p-4 transition-colors cursor-pointer border-b border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
             <p
               className="flex items-center justify-between gap-2 font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
               Source
@@ -155,14 +116,14 @@ export default function Dashboard({data}) {
             </p>
           </th>
           <th
-            className="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
+            className="p-4 transition-colors cursor-pointer border-b border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
             <p
               className="flex items-center justify-between gap-2 font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
             Status
             </p>
           </th>
           <th
-            className="p-4 transition-colors cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
+            className="p-4 transition-colors cursor-pointer border-b border-blue-gray-100 bg-blue-gray-50/50 hover:bg-blue-gray-50">
             <p
               className="flex items-center justify-between gap-2 font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
             Edit
@@ -247,7 +208,8 @@ export default function Dashboard({data}) {
       </tbody>
     </table>
   </div>
-  <div className="flex items-center justify-between p-2 border-t border-blue-gray-50">
+
+  <div className="absolute w-full bottom-0 z-100 bg-white flex items-center justify-between p-2 border-t border-blue-gray-50">
     <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
       Page 1 of 10
     </p>
